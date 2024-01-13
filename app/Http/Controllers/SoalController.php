@@ -41,22 +41,29 @@ class SoalController extends Controller
     {
         $request->validate([
             'pertanyaan.*' => 'required|string',
-            'jawaban.*' => 'required|string',
+            // 'jawaban.*' => 'required|string',
             'role.*' => 'required|array',
         ]);
 
-        foreach ($request->acara_id as $key => $value) {
+        // foreach ($request->acara_id as $key => $value) {
 
-            $roleString = implode(',', $request->input('roles')[$key]);
-            dd($roleString);
+        //     $roleString = implode(',', $request->input('roles')[$key]);
+        //     dd($roleString);
 
-            Soal::create([
-                'acara_id' => $value,
-                'pertanyaan' => $request->pertanyaan[$key],
-                'jawaban' => $request->jawaban[$key],
-                'role' => $roleString,
-            ]);
-        }
+        //     Soal::create([
+        //         'acara_id' => $value,
+        //         'pertanyaan' => $request->pertanyaan[$key],
+        //         'jawaban' => $request->jawaban[$key],
+        //         'role' => $roleString,
+        //     ]);
+        // }
+
+        $roleString = implode(',', $request->input('roles'));
+        Soal::create([
+                    'acara_id' => $request->acara,
+                    'pertanyaan' => $request->pertanyaan,
+                    'role' => $roleString,
+                ]);
 
         return redirect()->route('tableSoal')->with('success', 'Soal berhasil ditambahkan!');
     }

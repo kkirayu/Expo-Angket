@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Acara;
+use App\Models\Role;
 use App\Models\Soal;
 use Illuminate\Http\Request;
 
@@ -41,7 +42,7 @@ class AcaraController extends Controller
         ]);
 
         return redirect()->route('table')->with('success', 'Acara berhasil ditambahkan!');
-    
+
     }
 
     /**
@@ -80,5 +81,13 @@ class AcaraController extends Controller
     public function createSoal($acaraId)
     {
         return view('Admin.acaraCreateSoal', compact('acaraId'));
+    }
+
+    public function acaraCreateSoal($id)
+    {
+        $dId = decrypt($id);
+        $getAcara = Acara::findOrFail($dId);
+        $getRoles = Role::where('id','!=','1')->get();
+        return view('Admin.acaraCreateSoal-new', compact('getAcara','getRoles'));
     }
 }

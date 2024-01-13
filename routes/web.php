@@ -58,6 +58,8 @@ Route::middleware('auth')->group(function () {
     Route::get('soals/create', [SoalController::class, 'create'])->name('soals.create');
     Route::post('/createSoal', [SoalController::class, 'store'])->name('soalStore');
 
+    Route::get('/table/{id}/create-soal', [AcaraController::class, 'acaraCreateSoal'])->name('AcaraCreateSoal');
+
     Route::resource('acaras', AcaraController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('soals', SoalController::class);

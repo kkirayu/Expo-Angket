@@ -27,7 +27,7 @@
       <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2">
         <div class="pl-4 flex items-center">
           <a class="toggleColour text-white no-underline hover:no-underline font-bold text-2xl lg:text-4xl" href="#">
-            EXPO 2024 
+            EXPO 2024
           </a>
         </div>
         <div class="block lg:hidden pr-4">
@@ -44,10 +44,10 @@
               <a class="inline-block py-2 px-4 text-black font-bold no-underline" href="#">Active</a>
             </li> --}}
             <li class="mr-3">
-              <a class="toggleColour inline-block text-white no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="#">Expo</a>
+              <a class="toggleColour inline-block text-white {{ Request::is('/*') ? 'font-bold' : '' }} no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="#">Expo</a>
             </li>
             <li class="mr-3">
-              <a class="toggleColour inline-block text-white no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="#">Angket</a>
+              <a class="toggleColour inline-block text-white {{ Request::is('/angket') ? 'font-bold' : '' }} no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="#">Angket</a>
             </li>
           </ul>
             <a href="{{ route('login') }}"
