@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Soal extends Model
 {
@@ -22,5 +23,10 @@ class Soal extends Model
         'role',
         // tambahkan field-form lainnya
     ];
+
+    public function roles(): BelongsTo
+    {
+        return $this->belongsTo(Role::class);
+    }
 
 }

@@ -15,7 +15,8 @@ class SoalController extends Controller
     public function index()
     {
         $soal = Soal::all();
-        return view('Admin.tableSoal', compact('soal'));
+        $getRole = Role::all();
+        return view('Admin.tableSoal', compact('soal','getRole'));
     }
 
     /**
@@ -39,11 +40,13 @@ class SoalController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'pertanyaan.*' => 'required|string',
-            // 'jawaban.*' => 'required|string',
-            'role.*' => 'required|array',
-        ]);
+        // $request->validate([
+        //     'pertanyaan.*' => 'required|string',
+        //     // 'jawaban.*' => 'required|string',
+        //     'role.*' => 'required|array',
+        // ]);
+
+
 
         // foreach ($request->acara_id as $key => $value) {
 
@@ -58,12 +61,31 @@ class SoalController extends Controller
         //     ]);
         // }
 
-        $roleString = implode(',', $request->input('roles'));
-        Soal::create([
-                    'acara_id' => $request->acara,
-                    'pertanyaan' => $request->pertanyaan,
-                    'role' => $roleString,
-                ]);
+        // $roleString = implode(',', $request->input('roles'));
+        // Soal::create([
+        //             'acara_id' => $request->acara,
+        //             'pertanyaan' => $request->pertanyaan,
+        //             'role' => $roleString,
+        //         ]);
+
+        $request->validate([
+            'req.*.pertanyaan' => 'required',
+            'req.*.role' => 'required'
+        ]);
+
+
+        foreach ($request->req as $key => $value) {
+
+            // $roleString = implode(',', $roleee[$key]);
+
+            Soal::create($value);
+            // Soal::create([
+            //     'acara_id' => $request->acara[$key],
+            //     'pertanyaan' => $request->pertanyaan[$key],
+            //     'role' => $roleString,
+            // ]);
+        }
+        // dd($roleee);
 
         return redirect()->route('tableSoal')->with('success', 'Soal berhasil ditambahkan!');
     }
