@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AcaraController;
+use App\Http\Controllers\JawabanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SoalController;
@@ -63,7 +64,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('acaras', AcaraController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('soals', SoalController::class);
+    Route::resource('angkets', JawabanController::class);
     Route::get('acaras/{acara}/create-soal', [SoalController::class, 'create'])->name('soals.create-soal');
+
+    Route::get('/angket', [AcaraController::class, 'angketIndex'])->name('angket.index');
+    Route::get('/angket/{acaraId}', [JawabanController::class, 'angketForm'])->name('angket.form');
 });
 
 require __DIR__.'/auth.php';

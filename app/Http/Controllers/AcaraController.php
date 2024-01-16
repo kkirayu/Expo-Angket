@@ -106,10 +106,10 @@ class AcaraController extends Controller
         $getRoles = Role::where('id','!=','1')->get();
         return view('Admin.acaraCreateSoal-new', compact('getAcara','getRoles'));
     }
-    public function renderNavigation()
+    public function angketIndex()
     {
         $acaras = Acara::all();
 
-        return view('components.sidebar', compact('acaras'));
+        return view('angket', compact('acaras'));
     }
 }
