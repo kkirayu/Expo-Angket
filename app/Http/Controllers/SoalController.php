@@ -155,5 +155,11 @@ public function update(Request $request, $id)
         // Redirect with success message
         return redirect()->route('tableSoal')->with('success', 'Soal berhasil dihapus!');
     }
+
+    public function angketForm()
+    {
+        $soal = Soal::all();
+        return view('angketForm', compact('soal'));
+    }
     
 }
