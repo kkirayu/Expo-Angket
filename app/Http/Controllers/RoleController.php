@@ -52,24 +52,37 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Role $role)
+    public function edit($id)
     {
-        //
+        $role = Role::findOrFail($id);
+
+        return view('Admin.editRole', compact('role'));
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Role $role)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'role' => 'required|unique:roles,role,' . $id,
+        ]);
+
+        $role = Role::findOrFail($id);
+        $role->update(['role' => $request->role]);
+
+        return redirect()->route('roles.index')->with('success', 'Role berhasil diperbarui.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Role $role)
+    public function destroy($id)
     {
-        //
+        $role = Role::findOrFail($id);
+        $role->delete();
+    
+        return redirect()->route('roles.index')->with('success', 'Role berhasil dihapus.');
     }
 }

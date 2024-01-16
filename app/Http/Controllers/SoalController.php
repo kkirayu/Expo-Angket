@@ -105,9 +105,9 @@ class SoalController extends Controller
     public function edit($id)
     {
         $soal = Soal::findOrFail($id);
-        $acaras = Acara::all();
+        $getRoles = Role::where('id', '!=', 1)->orderBy('role', 'asc')->get();
 
-        return view('Admin.Soaledit', compact('soal', 'acaras'));
+        return view('Admin.editSoal', compact('soal', 'getRoles'));
     }
 
     /**
@@ -121,32 +121,39 @@ public function update(Request $request, $id)
 {
     $soal = Soal::findOrFail($id);
 
-    // Validasi data input
     $request->validate([
         'pertanyaan' => 'required|string',
-        'jawaban' => 'required|string',
-        'role' => 'required|array',
+        'req.0.role' => 'required',
     ]);
 
-    // Simpan data ke dalam database
     $soal->update([
-        'acara_id' => $request->acara_id,
         'pertanyaan' => $request->pertanyaan,
-        'jawaban' => $request->jawaban,
-        'role' => implode(',', $request->role),
+        'role' => $request->req[0]['role'],
     ]);
 
-    // Redirect dengan pesan sukses
     return redirect()->route('tableSoal')->with('success', 'Soal berhasil diperbarui!');
 }
+
+
+
+
+
+
 
 
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $soal = Soal::findOrFail($id);
+    
+        // Delete the soal
+        $soal->delete();
+    
+        // Redirect with success message
+        return redirect()->route('tableSoal')->with('success', 'Soal berhasil dihapus!');
     }
+    
 }

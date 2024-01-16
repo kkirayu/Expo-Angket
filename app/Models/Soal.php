@@ -21,12 +21,20 @@ class Soal extends Model
         'pertanyaan',
         'jawaban',
         'role',
-        // tambahkan field-form lainnya
+
     ];
 
     public function roles(): BelongsTo
     {
         return $this->belongsTo(Role::class);
     }
+
+    // Soal.php
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
 
 }
