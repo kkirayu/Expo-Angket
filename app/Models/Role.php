@@ -16,6 +16,14 @@ class Role extends Model
     {
         return $this->hasMany(Soal::class);
     }
+
+
+
+    public function soals()
+    {
+        return $this->belongsToMany(Soal::class);
+    }
+
 }
 
 

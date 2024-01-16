@@ -52,30 +52,46 @@ class AcaraController extends Controller
     {
         $acaras = Acara::find($acaraId);
 
-        return view('Admin.table', compact('acaras'));
+        return view('components.sidebar', compact('acaras'));
     }
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Acara $acara)
+    public function edit($acaraId)
     {
-        //
+        $acara = Acara::findOrFail($acaraId);
+        return view('Admin.editAcara', compact('acara'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Acara $acara)
+    public function update(Request $request, $acaraId)
     {
-        //
+        $request->validate([
+            'nama_acara' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+        ]);
+
+        $acara = Acara::findOrFail($acaraId);
+        $acara->update([
+            'nama_acara' => $request->nama_acara,
+            'deskripsi' => $request->deskripsi,
+        ]);
+
+        return redirect()->route('table')->with('success', 'Acara berhasil diperbarui!');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Acara $acara)
+    public function destroy($acaraId)
     {
-        //
+        $acara = Acara::findOrFail($acaraId);
+        $acara->delete();
+
+        return redirect()->route('table')->with('success', 'Acara berhasil dihapus!');
     }
 
     public function createSoal($acaraId)
@@ -89,5 +105,11 @@ class AcaraController extends Controller
         $getAcara = Acara::findOrFail($dId);
         $getRoles = Role::where('id','!=','1')->get();
         return view('Admin.acaraCreateSoal-new', compact('getAcara','getRoles'));
+    }
+    public function renderNavigation()
+    {
+        $acaras = Acara::all();
+
+        return view('components.sidebar', compact('acaras'));
     }
 }
