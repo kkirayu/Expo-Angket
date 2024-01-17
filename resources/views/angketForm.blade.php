@@ -6,10 +6,31 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Angket</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-gray-100 p-8">
 
     <div class="max-w-md mx-auto bg-white rounded-md p-6 shadow-md">
+
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                icon: "success",
+                title: "Terimakasih ayang @Vestia Zeta",
+                text: "Karena Success nanti dicium Zetas"
+                });
+            </script>
+        @endif
+
+        @if (session('error'))
+        <script>
+            Swal.fire({
+            icon: "error",
+            title: "Oppss, Ayo benerin",
+            text: "kalau bener nanti dipeluk zeta"
+            });
+        </script> 
+        @endif
         <h2 class="text-2xl font-semibold mb-4">Pertanyaan Angket</h2>
 
         <form action="{{ route('angkets.store') }}" method="post">
@@ -24,9 +45,9 @@
                             <input type="radio" name="jawaban[{{ $question->id }}]" value="{{ $i }}" class="mr-2">
                             <span>{{ $question->{"option_" . $i} }}</span>
                             @if ($i === 1)
-                                <span class="ml-2">(Sangat Buruk)</span>
+                                <span class="ml-2">(Sangat kurang baik)</span>
                             @elseif ($i === 2)
-                                <span class="ml-2">(Buruk)</span>
+                                <span class="ml-2">(Kurang baik)</span>
                             @elseif ($i === 3)
                                 <span class="ml-2">(Baik)</span>
                             @elseif ($i === 4)
