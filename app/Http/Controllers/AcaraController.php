@@ -110,6 +110,6 @@ class AcaraController extends Controller
     {
         $acaras = Acara::all();
 
-        return view('angket', compact('acaras'));
+        return view('index', compact('acaras'));
     }
 }

@@ -36,24 +36,29 @@ class JawabanController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    $jawabanData = $request->input('jawaban');
-    $user_id = auth()->user()->id;
+    {
+        $request->validate([
+            'jawaban.*' => 'required|integer',
+        ]);
 
-    $totalNilai = 0;
 
-    foreach ($jawabanData as $jawaban) {
-        $totalNilai += intval($jawaban);
+        $jawabanData = $request->input('jawaban');
+        $user_id = auth()->user()->id;
+
+        $totalNilai = 0;
+
+        foreach ($jawabanData as $jawaban) {
+            $totalNilai += intval($jawaban);
+        }
+
+        Jawaban::create([
+            'user_id' => $user_id,
+            'total_nilai' => $totalNilai,
+            'jawaban' => $totalNilai,
+        ]);
+
+        return redirect()->back()->with('success', 'Jawaban berhasil disimpan.');
     }
-
-    Jawaban::create([
-        'user_id' => $user_id,
-        'total_nilai' => $totalNilai,
-        'jawaban' => $totalNilai,
-    ]);
-
-    return redirect()->back()->with('success', 'Jawaban berhasil disimpan.');
-}
 
     
     
