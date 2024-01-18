@@ -18,42 +18,6 @@ class ProfileController extends Controller
      * Display the user's profile form.
      *
      */
-    public function index()
-    {
-        $user = User::all();
-        return view('Admin.userTable', compact('user'));
-    }
-
-    public function create()
-    {
-        $role = Role::all();
-        return view('Admin.userCreate', compact('role'));
-    }
-
-    public function store(Request $request)
-    {
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:8',
-            'pilihan' => 'nullable|string',
-            'role' => 'required',
-        ]);
-
-
-        $user = User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-            'pilihan' => $request->input('pilihan'),
-            'role_id' => $request->input('role'),
-        ]);
-
-
-        return redirect()->route('profile.index')->with('success', 'User created successfully!');
-    }
-
     public function edit(Request $request): View
     {
         return view('profile.edit', [

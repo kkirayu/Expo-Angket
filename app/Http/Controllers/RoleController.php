@@ -12,8 +12,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $role = Role::all();
-        return view('Admin.roleTable', compact('role'));
+        $roles = Role::all();
+        return view('Admin.role.role-index', compact('roles'));
     }
 
     /**
@@ -21,9 +21,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
-
-        return view('Admin.roleCreate', compact('roles'));
+        return view('Admin.role.role-form');
     }
 
     /**
@@ -31,14 +29,19 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $request->validate([
             'role' => 'required|unique:roles',
         ]);
 
         Role::create(['role' => $request->role]);
 
-        return redirect()->back()->with('success', 'Role berhasil ditambahkan.');
+        $notif = array(
+            'message' => 'Role Berhasil Ditambah',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('admin-roles.index')->with($notif);
     }
 
     /**
@@ -54,9 +57,10 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        $role = Role::findOrFail($id);
+        $dId = decrypt($id);
+        $edit = Role::findOrFail($dId);
 
-        return view('Admin.editRole', compact('role'));
+        return view('Admin.role.role-form', compact('edit'));
     }
 
 
@@ -69,10 +73,14 @@ class RoleController extends Controller
             'role' => 'required|unique:roles,role,' . $id,
         ]);
 
-        $role = Role::findOrFail($id);
-        $role->update(['role' => $request->role]);
+        Role::findOrFail($id)->update(['role' => $request->role]);
 
-        return redirect()->route('roles.index')->with('success', 'Role berhasil diperbarui.');
+        $notif = array(
+            'message' => 'Role Berhasil Diubah',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('admin-roles.index')->with($notif);
     }
 
     /**
@@ -82,7 +90,7 @@ class RoleController extends Controller
     {
         $role = Role::findOrFail($id);
         $role->delete();
-    
+
         return redirect()->route('roles.index')->with('success', 'Role berhasil dihapus.');
     }
 }

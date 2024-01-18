@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Acara;
 use App\Models\Role;
 use App\Models\Soal;
+use App\Models\Acara;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class AcaraController extends Controller
 {
@@ -15,7 +18,7 @@ class AcaraController extends Controller
     public function index()
     {
         $acaras = Acara::all();
-        return view('Admin.table', compact('acaras'));
+        return view('Admin.acara.acara-index', compact('acaras'));
     }
 
     /**
@@ -23,7 +26,7 @@ class AcaraController extends Controller
      */
     public function create()
     {
-        return view('Admin.createAcara');
+        return view('Admin.acara.acara-form');
     }
 
     /**
@@ -32,17 +35,30 @@ class AcaraController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_acara' => 'required|string|max:255',
+            'nama' => 'required|string|max:255',
             'deskripsi' => 'required|string',
         ]);
 
-        Acara::create([
-            'nama_acara' => $request->nama_acara,
+        $photo = $request->file('photo');
+        $genNama = hexdec(uniqid()) . '.' . $photo->getClientOriginalExtension();
+        $driver = new ImageManager(new Driver());
+        $image = $driver->read($photo)->scale(300, 300);
+        $image = $image->toJpeg(80)->save('img/acara/' . $genNama);
+        $save_url = 'img/acara/' . $genNama;
+        $slug = Str::slug($request->nama);
+
+        Acara::insert([
+            'nama_acara' => $request->nama,
             'deskripsi' => $request->deskripsi,
+            'photo' => $save_url,
+            'slug' => $slug,
         ]);
 
-        return redirect()->route('table')->with('success', 'Acara berhasil ditambahkan!');
-
+        $notif = array(
+            'message' => 'Acara Berhasil Ditambah',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('admin.acara')->with($notif);
     }
 
     /**
@@ -57,32 +73,63 @@ class AcaraController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($acaraId)
+    public function edit($id)
     {
-        $acara = Acara::findOrFail($acaraId);
-        return view('Admin.editAcara', compact('acara'));
+        $dId = decrypt($id);
+        $edit = Acara::findOrFail($dId);
+        return view('Admin.acara.acara-form', compact('edit'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $acaraId)
+    public function update(Request $request)
     {
         $request->validate([
-            'nama_acara' => 'required|string|max:255',
+            'nama' => 'required|string|max:255',
             'deskripsi' => 'required|string',
         ]);
 
-        $acara = Acara::findOrFail($acaraId);
-        $acara->update([
-            'nama_acara' => $request->nama_acara,
-            'deskripsi' => $request->deskripsi,
-        ]);
+        $acaraId = $request->id;
+        $photoLama = $request->photoLama;
 
-        return redirect()->route('table')->with('success', 'Acara berhasil diperbarui!');
+        if ($request->file('photo')) {
+            $photo = $request->file('photo');
+            @unlink(public_path($photoLama));
+            $genNama = hexdec(uniqid()) . '.' . $photo->getClientOriginalExtension();
+            $driver = new ImageManager(new Driver());
+            $image = $driver->read($photo)->scale(300, 300);
+            $save_url = 'img/acara/' . $genNama;
+            $image = $image->toJpeg(80)->save('img/acara/' . $genNama);
+
+            Acara::findOrFail($acaraId)->update([
+                'nama_acara' => $request->nama,
+                'deskripsi' => $request->deskripsi,
+                'photo' => $save_url
+            ]);
+
+        } else {
+            Acara::findOrFail($acaraId)->update([
+                'nama_acara' => $request->nama,
+                'deskripsi' => $request->deskripsi
+            ]);
+
+        }
+
+        $notif = array(
+            'message' => 'Acara Berhasil Diubah',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('admin.acara')->with($notif);
     }
 
-
+    public function soal($id)
+    {
+        $dId = decrypt($id);
+        $getAcara = Acara::findOrFail($dId);
+        $getRoles = Role::where('id', '!=', 1)->orderBy('role', 'asc')->get();
+        return view('Admin.acara.acara-form-soal', compact('getAcara','getRoles'));
+    }
     /**
      * Remove the specified resource from storage.
      */
@@ -103,8 +150,8 @@ class AcaraController extends Controller
     {
         $dId = decrypt($id);
         $getAcara = Acara::findOrFail($dId);
-        $getRoles = Role::where('id','!=','1')->get();
-        return view('Admin.acaraCreateSoal-new', compact('getAcara','getRoles'));
+        $getRoles = Role::where('id', '!=', '1')->get();
+        return view('Admin.acaraCreateSoal-new', compact('getAcara', 'getRoles'));
     }
     public function angketIndex()
     {
