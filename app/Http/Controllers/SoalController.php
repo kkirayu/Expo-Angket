@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Acara;
 use App\Models\Role;
 use App\Models\Soal;
+use App\Models\Acara;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class SoalController extends Controller
 {
@@ -14,9 +15,21 @@ class SoalController extends Controller
      */
     public function index()
     {
-        $soal = Soal::all();
+        // $getAcara = Acara::where('slug',$slug)->get('id');
+        // $soal = Soal::where('acara_id', $getAcara);
+        // // dd($soal);
+        // $getRole = Role::all();
+        // return view('Admin.soal.soal-index', compact('soal','getRole'));
+    }
+
+    public function soalAcara($slug)
+    {
+        $getAcaraId = Acara::where('slug', $slug)->first();
+        $soal = Soal::where('acara_id', $getAcaraId->id)->get();
+        $judul = $getAcaraId->nama_acara;
+        // dd($soal);
         $getRole = Role::all();
-        return view('Admin.tableSoal', compact('soal','getRole'));
+        return view('Admin.soal.soal-index', compact('soal', 'getRole', 'judul'));
     }
 
     /**
@@ -25,14 +38,9 @@ class SoalController extends Controller
     public function create()
     {
         $acaras = Acara::all();
-        $getRoles = Role::where('id','!=',1)->orderBy('role', 'asc')->get();
-        return view('Admin.AcaraCreateSoal', compact('acaras','getRoles'));
+        $getRoles = Role::where('id', '!=', 1)->orderBy('role', 'asc')->get();
+        return view('Admin.AcaraCreateSoal', compact('acaras', 'getRoles'));
     }
-
-
-
-
-
 
 
     /**
@@ -40,54 +48,24 @@ class SoalController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'pertanyaan.*' => 'required|string',
-        //     // 'jawaban.*' => 'required|string',
-        //     'role.*' => 'required|array',
-        // ]);
-
-
-
-        // foreach ($request->acara_id as $key => $value) {
-
-        //     $roleString = implode(',', $request->input('roles')[$key]);
-        //     dd($roleString);
-
-        //     Soal::create([
-        //         'acara_id' => $value,
-        //         'pertanyaan' => $request->pertanyaan[$key],
-        //         'jawaban' => $request->jawaban[$key],
-        //         'role' => $roleString,
-        //     ]);
-        // }
-
-        // $roleString = implode(',', $request->input('roles'));
-        // Soal::create([
-        //             'acara_id' => $request->acara,
-        //             'pertanyaan' => $request->pertanyaan,
-        //             'role' => $roleString,
-        //         ]);
-
         $request->validate([
             'req.*.pertanyaan' => 'required',
             'req.*.role' => 'required'
         ]);
 
+        $acaraId = $request->input('req.0.acara_id');
+        $getAcara = Acara::findOrFail($acaraId);
+        $slug = $getAcara->slug;
 
         foreach ($request->req as $key => $value) {
-
-            // $roleString = implode(',', $roleee[$key]);
-
             Soal::create($value);
-            // Soal::create([
-            //     'acara_id' => $request->acara[$key],
-            //     'pertanyaan' => $request->pertanyaan[$key],
-            //     'role' => $roleString,
-            // ]);
         }
-        // dd($roleee);
+        $notif = array(
+            'message' => 'Soal Angket Berhasil Ditambah',
+            'alert-type' => 'success'
+        );
 
-        return redirect()->route('tableSoal')->with('success', 'Soal berhasil ditambahkan!');
+        return redirect()->route('admin.soal', $slug)->with($notif);
     }
 
 
@@ -104,35 +82,42 @@ class SoalController extends Controller
      */
     public function edit($id)
     {
-        $soal = Soal::findOrFail($id);
-        $getRoles = Role::where('id', '!=', 1)->orderBy('role', 'asc')->get();
 
-        return view('Admin.editSoal', compact('soal', 'getRoles'));
+        $dId = decrypt($id);
+        $edit = Soal::findOrFail($dId);
+        $getAcara = Acara::where('id', $edit->acara_id)->first();
+        // dd($getAcara);
+        $getRoles = Role::where('id', '!=', 1)->orderBy('role', 'asc')->get();
+        return view('Admin.acara.acara-form-soal', compact('edit', 'getRoles', 'getAcara'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-   // SoalController.php
+    // SoalController.php
 
-// ...
+    // ...
 
-public function update(Request $request, $id)
-{
-    $soal = Soal::findOrFail($id);
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'req.*.pertanyaan' => 'required|string',
+            'req.*.role' => 'required',
+        ]);
 
-    $request->validate([
-        'pertanyaan' => 'required|string',
-        'req.0.role' => 'required',
-    ]);
+        $slug = $request->slug;
+        Soal::findOrFail($id)->update([
+            'pertanyaan' => $request->req[0]['pertanyaan'],
+            'role' => $request->req[0]['role'],
+        ]);
 
-    $soal->update([
-        'pertanyaan' => $request->pertanyaan,
-        'role' => $request->req[0]['role'],
-    ]);
+        $notif = array(
+            'message' => 'Soal Angket Berhasil Diubah',
+            'alert-type' => 'success'
+        );
 
-    return redirect()->route('tableSoal')->with('success', 'Soal berhasil diperbarui!');
-}
+        return redirect()->route('admin.soal', $slug)->with($notif);
+    }
 
 
 
@@ -148,10 +133,10 @@ public function update(Request $request, $id)
     public function destroy($id)
     {
         $soal = Soal::findOrFail($id);
-    
+
         // Delete the soal
         $soal->delete();
-    
+
         // Redirect with success message
         return redirect()->route('tableSoal')->with('success', 'Soal berhasil dihapus!');
     }
@@ -161,5 +146,4 @@ public function update(Request $request, $id)
         $soal = Soal::all();
         return view('angketForm', compact('soal'));
     }
-    
 }
