@@ -83,9 +83,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin-acara/store', [AcaraController::class, 'store'])->name('admin.acara-store');
     Route::get('/admin-acara/{id}/edit', [AcaraController::class, 'edit'])->name('admin.acara-edit');
     Route::put('/admin-acara/{id}', [AcaraController::class, 'update'])->name('admin.acara-update');
-    Route::get('/admin-acara/{id}/soal', [AcaraController::class, 'soal'])->name('admin.acara-soal');
 
     // Route Admin Soal
+    Route::get('/admin-soal/{id}/soal', [AcaraController::class, 'soal'])->name('admin.acara-soal');
     Route::get('/admin-soal/{slug}/acara', [SoalController::class, 'soalAcara'])->name('admin.soal');
     Route::post('/admin-soal/store', [SoalController::class, 'store'])->name('admin.soal-store');
     Route::get('/admin-soal/{id}/edit', [SoalController::class, 'edit'])->name('admin.soal-edit');
@@ -93,6 +93,8 @@ Route::middleware('auth')->group(function () {
 
     // Route Admin Role
     Route::resource('admin-roles', RoleController::class);
+    Route::get('/admin-roles/{slug}/acara', [RoleController::class, 'roleAcara'])->name('admin.role-acara');
+    Route::get('/admin-roles/{id}/tambah', [RoleController::class, 'roleTambah'])->name('admin.role-tambah');
 
     // Route Admin User
     Route::resource('admin-user', UserController::class);

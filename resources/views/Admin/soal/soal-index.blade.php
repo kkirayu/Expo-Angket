@@ -9,6 +9,12 @@
                     <div>
                         <h5 class="mb-0">List Soal Angket {{ $judul }}</h5>
                     </div>
+                    <div class="font-22 ms-auto">
+                        <div class="btn-group">
+                            <button type="button" onclick="window.location.href='{{ route('admin.acara-soal', encrypt($getAcaraId->id)) }}'"
+                                class="btn btn-primary">Tambah Soal</button>
+                        </div>
+                    </div>
                 </div>
                 <hr>
                 <div class="table-responsive">

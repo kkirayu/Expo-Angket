@@ -17,7 +17,7 @@ class AcaraController extends Controller
      */
     public function index()
     {
-        $acaras = Acara::all();
+        $acaras = Acara::where('id','!=',1)->get();
         return view('Admin.acara.acara-index', compact('acaras'));
     }
 
@@ -127,7 +127,7 @@ class AcaraController extends Controller
     {
         $dId = decrypt($id);
         $getAcara = Acara::findOrFail($dId);
-        $getRoles = Role::where('id', '!=', 1)->orderBy('role', 'asc')->get();
+        $getRoles = Role::where('id', '!=', 1)->where('acara_id',$getAcara->id)->orderBy('role', 'asc')->get();
         return view('Admin.acara.acara-form-soal', compact('getAcara','getRoles'));
     }
     /**
