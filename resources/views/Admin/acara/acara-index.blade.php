@@ -44,9 +44,12 @@
                                     <td width="55%" style="white-space:normal;">{{ $acara->deskripsi }}</td>
                                     <td width="10%">
                                         <div class="d-flex order-actions">
-                                            <a href="{{ route('admin.acara-soal', encrypt($acara->id)) }}"
+                                            <a href="{{ route('admin.role-acara', $acara->slug) }}"
                                                 class="ms-1 text-white" style="background: #0d6efd" data-toggle="tooltip"
-                                                title="Tambah Soal"><i class="bx bx-plus"></i></a>
+                                                title="Tambah Role"><i class="bx bx-shield"></i></a>
+                                            <a href="{{ route('admin.soal', $acara->slug) }}"
+                                                class="ms-1 text-white" style="background: #0d6efd" data-toggle="tooltip"
+                                                title="Tambah Soal"><i class="bx bx-spreadsheet"></i></a>
                                             <a href="{{ route('admin.acara-edit', encrypt($acara->id)) }}"
                                                 class="ms-1 text-white" style="background: #0d6efd" data-toggle="tooltip"
                                                 title="Edit"><i class="bx bx-edit"></i></a>

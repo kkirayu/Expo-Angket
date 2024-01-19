@@ -29,7 +29,7 @@ class SoalController extends Controller
         $judul = $getAcaraId->nama_acara;
         // dd($soal);
         $getRole = Role::all();
-        return view('Admin.soal.soal-index', compact('soal', 'getRole', 'judul'));
+        return view('Admin.soal.soal-index', compact('getAcaraId','soal', 'getRole', 'judul'));
     }
 
     /**

@@ -9,7 +9,7 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Form {{ isset($edit) ? 'Edit' : 'Tambah' }} Role</h4>
+                                <h4>Form {{ isset($edit) ? 'Edit' : 'Tambah' }} Role {{ $judul->nama_acara }}</h4>
                             </div>
                             <div class="card-body">
                                 <form id="myForm"
@@ -20,6 +20,7 @@
                                         @method('PUT')
                                         <input type="hidden" value="{{ $edit->id }}" name="id" />
                                     @endif
+                                    <input type="hidden" value="{{ old('role', isset($edit) ? $edit->role : $acara) }}" name="acara" />
                                     <div class="row mb-3">
                                         <div class="col-sm-3">
                                             <h6 class="mb-0">Nama Role</h6>
@@ -28,6 +29,9 @@
                                             <input type="text" name="role" class="form-control"
                                                 value="{{ old('role', isset($edit) ? $edit->role : '') }}"
                                                 placeholder="Ex: Admin" />
+                                                @error('role')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                         </div>
                                     </div>
                                     <div class="row">

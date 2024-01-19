@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
+use App\Models\Acara;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
@@ -31,17 +32,20 @@ class RoleController extends Controller
     {
 
         $request->validate([
-            'role' => 'required|unique:roles',
+            'role' => 'required',
         ]);
 
-        Role::create(['role' => $request->role]);
+        $acara = Acara::findOrFail($request->acara);
+        $slug = $acara->slug;
+
+        Role::create(['role' => $request->role, 'acara_id' => $request->acara]);
 
         $notif = array(
             'message' => 'Role Berhasil Ditambah',
             'alert-type' => 'success'
         );
 
-        return redirect()->route('admin-roles.index')->with($notif);
+        return redirect()->route('admin.role-acara', $slug)->with($notif);
     }
 
     /**
@@ -92,5 +96,23 @@ class RoleController extends Controller
         $role->delete();
 
         return redirect()->route('roles.index')->with('success', 'Role berhasil dihapus.');
+    }
+
+    public function roleAcara($slug)
+    {
+        $getAcaraId = Acara::where('slug', $slug)->first();
+        $roles = Role::where('acara_id', $getAcaraId->id)->get();
+        $judul = $getAcaraId->nama_acara;
+        // dd($soal);
+        $getRole = Role::all();
+        return view('Admin.role.role-index', compact('getAcaraId','roles', 'getRole', 'judul'));
+    }
+
+    public function roleTambah($id)
+    {
+        $dId = decrypt($id);
+        $judul = Acara::findOrFail($dId);
+        $acara = $dId;
+        return view('Admin.role.role-form', compact('acara', 'judul'));
     }
 }

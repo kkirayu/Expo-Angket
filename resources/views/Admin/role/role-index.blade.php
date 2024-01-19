@@ -7,11 +7,11 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div>
-                        <h5 class="mb-0">List Role</h5>
+                        <h5 class="mb-0">List Role {{ $judul }}</h5>
                     </div>
                     <div class="font-22 ms-auto">
                         <div class="btn-group">
-                            <button type="button" onclick="window.location.href='{{ route('admin-roles.create') }}'"
+                            <button type="button" onclick="window.location.href='{{ route('admin.role-tambah', encrypt($getAcaraId->id)) }}'"
                                 class="btn btn-primary">Tambah Role</button>
                         </div>
                     </div>
