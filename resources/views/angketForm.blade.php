@@ -8,61 +8,120 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body class="bg-gray-100 p-8">
+<body class="bg-gray-100" style="background-image: url('{{ asset('assets/img/bgwp.svg') }}'); background-size: cover; background-position: center;" class="bg-gray-100">
 
-    <div class="max-w-md mx-auto bg-white rounded-md p-6 shadow-md">
 
-        @if (session('success'))
-            <script>
-                Swal.fire({
-                icon: "success",
-                title: "Terimakasih ayang @Vestia Zeta",
-                text: "Karena Success nanti dicium Zetas"
-                });
-            </script>
-        @endif
-
-        @if (session('error'))
-        <script>
-            Swal.fire({
-            icon: "error",
-            title: "Oppss, Ayo benerin",
-            text: "kalau bener nanti dipeluk zeta"
-            });
-        </script> 
-        @endif
-        <h2 class="text-2xl font-semibold mb-4">Pertanyaan Angket</h2>
-
-        <form action="{{ route('angkets.store') }}" method="post">
-            @csrf
-
-            @foreach($soal as $question)
-            <div class="mb-4">
-                <p class="text-lg font-medium">{{ $question->pertanyaan }}</p>
-                <div class="mt-2">
-                    @for($i = 1; $i <= 4; $i++)
-                        <label class="flex items-center">
-                            <input type="radio" name="jawaban[{{ $question->id }}]" value="{{ $i }}" class="mr-2">
-                            <span>{{ $question->{"option_" . $i} }}</span>
-                            @if ($i === 1)
-                                <span class="ml-2">(Sangat kurang baik)</span>
-                            @elseif ($i === 2)
-                                <span class="ml-2">(Kurang baik)</span>
-                            @elseif ($i === 3)
-                                <span class="ml-2">(Baik)</span>
-                            @elseif ($i === 4)
-                                <span class="ml-2">(Sangat Baik)</span>
-                            @endif
-                        </label>
-                    @endfor
-                </div>
-            </div>
+    <nav class="border-gray-200 bg-green-700 mb-10">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+          <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
+              <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
+              <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">EXPO2024</span>
+          </a>
+          <button data-collapse-toggle="navbar-solid-bg" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-solid-bg" aria-expanded="false">
+              <span class="sr-only">Open main menu</span>
+              <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+              </svg>
+          </button>
+          <div class="hidden w-full md:block md:w-auto" id="navbar-solid-bg">
+            <ul class="flex flex-col font-medium mt-4 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700">
+              <li>
+                <a href="{{ route('indexLp') }}" class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Home</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        </nav>
+      
+        <div class="container mx-auto">
+            <div class="max-w-xs mx-auto bg-white rounded-md p-6 shadow-md lg:max-w-2xl mt-5">
+    
+                @if (session('success'))
+                    <script>
+                        Swal.fire({
+                        icon: "success",
+                        title: "Terimakasih ayang @Vestia Zeta",
+                        text: "Karena Success nanti dicium Zetas"
+                        });
+                    </script>
+                @endif
             
-            @endforeach
-
-            <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md mt-4">Submit</button>
-        </form>
-    </div>
-
+                @if (session('error'))
+                <script>
+                    Swal.fire({
+                    icon: "error",
+                    title: "Oppss, Ayo benerin",
+                    text: "kalau bener nanti dipeluk zeta"
+                    });
+                </script> 
+                @endif
+            
+                <form action="{{ route('angkets.store') }}" method="post">
+                    @csrf
+                    <h2 class="text-2xl font-semibold mb-4">Data Diri:</h2>
+                    <div class="mb-5">
+                        <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
+                        <input type="text" name="nama" id="nama" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="vestia Zeta" required>
+                    </div>
+                    
+                    <!-- Input for Email -->
+                    <div class="mb-5">
+                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                        <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="zeta@gmail.com" required>
+                    </div>
+                    <div class="mb-5">
+                        <label for="instansi" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
+                        <select name="instansi" id="instansi" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                            <option value="" disabled='true'>Select Role</option>
+                            @foreach($roles as $role)
+                                <option value="{{ $role->role }}" {{ $userRole == $role->role ? 'selected' : '' }}>
+                                    {{ $role->role }}
+                                </option>
+                            @endforeach
+                        </select>
+                     </div>
+                </div>
+    
+                    
+                <div class="max-w-xs mx-auto bg-white rounded-md p-6 shadow-md lg:max-w-2xl mt-5">
+                    <h2 class="text-2xl font-semibold mb-4 p-5">Soal Angket</h2>
+                    @foreach($soal as $index => $question)
+                        <div class="mb-4 {{ $index % 2 == 0 ? 'bg-gray-200 rounded-xl' : 'bg-gray-300 rounded-xl' }} lg:p-10 md:pt-10 pb-10">
+                            <p class="text-lg font-medium pt-5 ml-5">
+                                @if ($index === 0)
+                                    1: {{ $question->pertanyaan }}
+                                @elseif ($index === 1)
+                                    2: {{ $question->pertanyaan }}
+                                @elseif ($index === 2)
+                                    3: {{ $question->pertanyaan }}
+                                @else
+                                    {{ $index + 1 }}: {{ $question->pertanyaan }}
+                                @endif
+                            </p>
+                            <div class="mt-2 ml-10 lg:ml-20">
+                                @for($i = 1; $i <= 4; $i++)
+                                    <label class="flex items-center">
+                                        <input type="radio" name="jawaban[{{ $question->id }}]" value="{{ $i }}" class="mr-2 mt-4">
+                                        <span>{{ $question->{"option_" . $i} }}</span>
+                                        @if ($i === 1)
+                                            <span class="ml-2 mt-4">(Sangat kurang baik)</span>
+                                        @elseif ($i === 2)
+                                            <span class="ml-2 mt-4">(Kurang baik)</span>
+                                        @elseif ($i === 3)
+                                            <span class="ml-2 mt-4">(Baik)</span>
+                                        @elseif ($i === 4)
+                                            <span class="ml-2 mt-4">(Sangat Baik)</span>
+                                        @endif
+                                    </label>
+                                @endfor
+                            </div>
+                        </div>
+                    @endforeach
+                    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md mt-4 text-right">Submit</button>
+                </div>
+            </form>    
+            </div>
+        </div>
+    
 </body>
 </html>

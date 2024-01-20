@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Acara;
 use App\Models\jawaban;
+use App\Models\Role;
 use App\Models\Soal;
 use Illuminate\Http\Request;
 
@@ -19,8 +20,12 @@ class JawabanController extends Controller
 
         // Dapatkan informasi acara
         $acara = Acara::findOrFail($acaraId);
+        $roles = Role::all();
+        $userRole = auth()->user()->role;
 
-        return view('angketForm', compact('soal', 'acara'));
+        // $soal = Soal::where('acara_id', $acara->id)->where('role', $userRole)->get();
+
+        return view('angketForm', compact('soal', 'acara','roles','userRole'));
     }
 
 
@@ -37,26 +42,31 @@ class JawabanController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
+            'nama' => 'required|string',
+            'email' => 'required|email',
+            'instansi' => 'required|string',
             'jawaban.*' => 'required|integer',
         ]);
-
-
+    
         $jawabanData = $request->input('jawaban');
         $user_id = auth()->user()->id;
-
+    
         $totalNilai = 0;
-
+    
         foreach ($jawabanData as $jawaban) {
             $totalNilai += intval($jawaban);
         }
-
+    
         Jawaban::create([
             'user_id' => $user_id,
-            'total_nilai' => $totalNilai,
             'jawaban' => $totalNilai,
+            'nama' => $request->input('nama'),
+            'email' => $request->input('email'),
+            'instansi' => $request->input('instansi'),
         ]);
-
+    
         return redirect()->back()->with('success', 'Jawaban berhasil disimpan.');
     }
 
