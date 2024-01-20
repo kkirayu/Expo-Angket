@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Models\Soal;
 use App\Models\Acara;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Intervention\Image\ImageManager;
@@ -156,7 +157,11 @@ class AcaraController extends Controller
     public function angketIndex()
     {
         $acaras = Acara::all();
+        $users = User::all();
 
-        return view('index', compact('acaras'));
+        return view('index', compact('acaras', 'users'));
     }
+
+
+    
 }

@@ -10,6 +10,12 @@
     <meta name="description" content="Simple landind page" />
     <meta name="keywords" content="" />
     <meta name="author" content="" />
+    <script>
+      function scrollToAcaras() {
+          var acarasSection = document.getElementById('acaras-section');
+          acarasSection.scrollIntoView({ behavior: 'smooth' });
+      }
+  </script>
     <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"/>
     <!--Replace with your tailwind.css once created-->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" />
@@ -50,12 +56,24 @@
               <a class="toggleColour inline-block text-white {{ Request::is('/angket') ? 'font-bold' : '' }} no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="#">Angket</a>
             </li>
           </ul>
-            <a href="{{ route('login') }}"
-                id="navAction"
-                class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
-                >
-                Sign In
-            </a>
+          @if (auth()->check())
+          <!-- Jika pengguna sudah terautentikasi, tampilkan tautan logout -->
+          <a href="{{ route('logout') }}"
+              id="navAction"
+              class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
+          >
+              Logout
+          </a>
+      @else
+          <!-- Jika pengguna belum terautentikasi, tampilkan tautan login -->
+          <a href="{{ route('login') }}"
+              id="navAction"
+              class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
+          >
+              Sign In
+          </a>
+      @endif
+      
         </div>
       </div>
       {{-- <hr class="border-b border-gray-100 opacity-25 my-0 py-0" /> --}}
@@ -72,9 +90,17 @@
           <p class="leading-normal text-2xl mb-8">
             Silahkan Isi Angket Dengan Akun Yang Sudah Terdaftar
           </p>
+          @guest
           <button onclick="window.location.href='{{ route('angket.index') }}'" class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
             Ayo Isi Angket
-        </button>
+          </button>
+          @endguest
+
+          @auth
+          <button onclick="scrollToAcaras()" class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+            Lihat Angket
+          </button>
+          @endauth
         
         </div>
         <!--Right Col-->
@@ -422,40 +448,13 @@
       </div>
     </section>
     <section class="bg-white border-b py-8">
-      @guest
-      <div class="container mx-auto flex flex-wrap pt-20 pb-12">
-        <h2 class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
-          Acara Yang Sedang Berlangsung
-        </h2>
-        <div class="w-full mb-4">
-          <div class="h-1 mx-auto gradient w-64 opacity-25 my-0 py-0 rounded-t"></div>
-        </div>
-        <div class="w-full md:w-1/3 p-6 flex flex-col flex-grow flex-shrink">
-          <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden shadow">
-            <a href="#" class="flex flex-wrap no-underline hover:no-underline">
-              <p class="w-full text-gray-600 text-xs md:text-sm px-6">
-                Expo SMKN 1 Mars
-              </p>
-              <div class="w-full font-bold text-xl text-gray-800 px-6">
-                Lorem ipsum dolor sit amet.
-              </div>
-              <p class="text-gray-800 text-base px-6 mb-5">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit amet ligula.
-              </p>
-            </a>
-          </div>
-          <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden shadow p-6">
-            <div class="flex items-center justify-start">
-              <button class="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
-                Action
-              </button>
-            </div>
-          </div>
-        </div>
-      @endguest
 
-      @auth
-      <div id="acaras-section" class="flex flex-wrap justify-center mt-10">
+      
+      <div id="acaras-section" class="container max-w-5xl mx-auto m-8">
+        <h2  class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
+         Daftar Angket Yang Tersedia
+        </h2>
+      <div class="flex flex-wrap justify-center mt-10">
         @foreach($acaras as $acara)
             <div class="w-full md:w-1/3 p-6 flex flex-col flex-grow flex-shrink">
                 <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden shadow">
@@ -481,9 +480,9 @@
             </div>
         @endforeach
     </div>
+    </div>
     
-    
-      @endauth
+
     </section>
     <svg class="wave-top" viewBox="0 0 1439 147" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">

@@ -9,11 +9,7 @@ class jawaban extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        'soal_id',
-        'jawaban',
-    ];
+    protected $fillable = ['user_id', 'total_nilai', 'jawaban', 'nama', 'email', 'instansi'];
     public function soals()
     {
         return $this->hasMany(Soal::class);

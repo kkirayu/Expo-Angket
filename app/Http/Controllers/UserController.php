@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Acara;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -124,5 +125,11 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function indexLp()
+    {
+        $acaras = Acara::all();
+        return view('index', compact('acaras'));
     }
 }
