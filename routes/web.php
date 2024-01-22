@@ -25,7 +25,8 @@ Route::get('/',[UserController::class, 'indexLp'])->name('indexLp');
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
+Route::get('/angket', [AcaraController::class, 'angketIndex'])->name('angket.index');
+Route::get('/angket/{acaraId}', [JawabanController::class, 'angketForm'])->name('angket.form');
 // Route::get('/Admin', function () {
 //     return view('Admin.Dashboard');
 // })->middleware(['auth', 'verified'])->name('admin.dashboard');
@@ -66,8 +67,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('angkets', JawabanController::class);
     Route::get('acaras/{acara}/create-soal', [SoalController::class, 'create'])->name('soals.create-soal');
 
-    Route::get('/angket', [AcaraController::class, 'angketIndex'])->name('angket.index');
-    Route::get('/angket/{acaraId}', [JawabanController::class, 'angketForm'])->name('angket.form');
+    
 
 
 
