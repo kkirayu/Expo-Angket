@@ -21,11 +21,10 @@ class JawabanController extends Controller
         // Dapatkan informasi acara
         $acara = Acara::findOrFail($acaraId);
         $roles = Role::all();
-        $userRole = auth()->user()->role;
 
         // $soal = Soal::where('acara_id', $acara->id)->where('role', $userRole)->get();
 
-        return view('angketForm', compact('soal', 'acara','roles','userRole'));
+        return view('angketForm', compact('soal', 'acara','roles'));
     }
 
 
