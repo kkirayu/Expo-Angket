@@ -14,7 +14,6 @@ class Soal extends Model
     {
         return $this->belongsTo(Acara::class);
     }
-    protected $casts = ['role' => 'array'];
 
     protected $fillable = [
         'acara_id',
@@ -23,6 +22,9 @@ class Soal extends Model
         'role',
 
     ];
+    
+    protected $casts = ['role' => 'array'];
+
 
     public function roles(): BelongsTo
     {

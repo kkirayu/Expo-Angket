@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Acara;
-use App\Models\jawaban;
+use App\Models\Jawaban;
 use App\Models\Role;
 use App\Models\Soal;
 use Illuminate\Http\Request;
@@ -20,7 +20,7 @@ class JawabanController extends Controller
 
         // Dapatkan informasi acara
         $acara = Acara::findOrFail($acaraId);
-        $roles = Role::all();
+        $roles = Role::where('acara_id',$acaraId)->get();
 
         // $soal = Soal::where('acara_id', $acara->id)->where('role', $userRole)->get();
 
@@ -48,16 +48,16 @@ class JawabanController extends Controller
             'instansi' => 'required|string',
             'jawaban.*' => 'required|integer',
         ]);
-    
+
         $jawabanData = $request->input('jawaban');
         $user_id = auth()->user()->id;
-    
+
         $totalNilai = 0;
-    
+
         foreach ($jawabanData as $jawaban) {
             $totalNilai += intval($jawaban);
         }
-    
+
         Jawaban::create([
             'user_id' => $user_id,
             'jawaban' => $totalNilai,
@@ -65,12 +65,23 @@ class JawabanController extends Controller
             'email' => $request->input('email'),
             'instansi' => $request->input('instansi'),
         ]);
-    
+
         return redirect()->back()->with('success', 'Jawaban berhasil disimpan.');
     }
 
-    
-    
+    public function pertanyaanByRole(Request $request ,$id)
+    {
+
+        $questions = Soal::whereJsonContains('role_id', $id)->get();
+        // return response()->json($questions);
+        return response()->json([
+            'data' => $questions,
+            'message' => 'Show Pengunjung',
+            'success' => true
+        ]);
+    }
+
+
 
 
     /**
@@ -80,6 +91,7 @@ class JawabanController extends Controller
     {
         //
     }
+
 
     /**
      * Show the form for editing the specified resource.

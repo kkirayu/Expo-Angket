@@ -53,13 +53,23 @@ class SoalController extends Controller
             'req.*.role' => 'required'
         ]);
 
+
         $acaraId = $request->input('req.0.acara_id');
         $getAcara = Acara::findOrFail($acaraId);
         $slug = $getAcara->slug;
 
-        foreach ($request->req as $key => $value) {
-            Soal::create($value);
+        $data = [];
+        foreach ($request->req as $r) {
+
+            $data[] = [
+                'acara_id' => $r['acara_id'],
+                'pertanyaan' => $r['pertanyaan'],
+                'role_id' => json_encode($r['role']),
+            ];
         }
+
+        Soal::insert($data);
+        // dd($data);
         $notif = array(
             'message' => 'Soal Angket Berhasil Ditambah',
             'alert-type' => 'success'

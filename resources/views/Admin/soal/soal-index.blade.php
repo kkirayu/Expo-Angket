@@ -33,9 +33,9 @@
                                     <td width="5%">#{{ $index + 1 }}</td>
                                     <td width="55%" style="white-space:normal;">{{ $a->pertanyaan }}</td>
                                     <td width="30%" style="white-space:normal;">
-                                        @foreach ($a->role as $ar)
+                                        @foreach (json_decode($a->role_id, true) as $ar)
                                             @foreach ($getRole as $ro)
-                                                @if ($ro->id == $ar)
+                                                @if ($ro->id == json_decode($ar, true))
                                                     <span class="badge bg-info text-white">{{ $ro->role }}</span>
                                                 @endif
                                             @endforeach

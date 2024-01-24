@@ -67,7 +67,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('angkets', JawabanController::class);
     Route::get('acaras/{acara}/create-soal', [SoalController::class, 'create'])->name('soals.create-soal');
 
-    
+
 
 
 
@@ -99,5 +99,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('admin-user', UserController::class);
 
 });
+
 
 require __DIR__.'/auth.php';

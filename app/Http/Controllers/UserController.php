@@ -129,7 +129,7 @@ class UserController extends Controller
 
     public function indexLp()
     {
-        $acaras = Acara::all();
+        $acaras = Acara::where('id','!=',1)->get();
         return view('index', compact('acaras'));
     }
 }
