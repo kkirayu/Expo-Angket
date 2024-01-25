@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('pertanyaan-role/{id}', [JawabanController::class, 'pertanyaanByRole']);
+Route::post('pertanyaan-store', [JawabanController::class, 'store']);
