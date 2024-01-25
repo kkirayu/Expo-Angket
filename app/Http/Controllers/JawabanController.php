@@ -41,33 +41,36 @@ class JawabanController extends Controller
      */
     public function store(Request $request)
     {
+        // Uncomment this line for debugging
         // dd($request->all());
+    
         $request->validate([
             'nama' => 'required|string',
             'email' => 'required|email',
             'instansi' => 'required|string',
             'jawaban.*' => 'required|integer',
         ]);
-
+    
         $jawabanData = $request->input('jawaban');
-        $user_id = auth()->user()->id;
-
-        $totalNilai = 0;
-
-        foreach ($jawabanData as $jawaban) {
-            $totalNilai += intval($jawaban);
+    
+        // Check if $jawabanData is not null before iterating
+        if ($jawabanData !== null) {
+            $totalNilai = array_sum($jawabanData);
+    
+            Jawaban::create([
+                'jawaban' => $totalNilai,
+                'nama' => $request->input('nama'),
+                'email' => $request->input('email'),
+                'instansi' => $request->input('instansi'),
+            ]);
+    
+            return redirect()->back()->with('success', 'Jawaban berhasil disimpan.');
         }
-
-        Jawaban::create([
-            'user_id' => $user_id,
-            'jawaban' => $totalNilai,
-            'nama' => $request->input('nama'),
-            'email' => $request->input('email'),
-            'instansi' => $request->input('instansi'),
-        ]);
-
-        return redirect()->back()->with('success', 'Jawaban berhasil disimpan.');
+    
+        return redirect()->back()->with('error', 'Tidak ada jawaban yang disubmit.');
     }
+    
+
 
     public function pertanyaanByRole(Request $request ,$id)
     {
