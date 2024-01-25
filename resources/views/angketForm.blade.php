@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Angket</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js'
+    integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous'>
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -66,7 +73,7 @@
                 </script>
             @endif
 
-            <form action="{{ route('angkets.store') }}" method="post">
+            <form id="myForm" action="{{ route('angkets.store') }}" method="post">
                 @csrf
                 <h2 class="text-2xl font-semibold mb-4">Data Diri:</h2>
                 <div class="mb-5">
@@ -104,75 +111,71 @@
 
         <div class="max-w-xs mx-auto bg-white rounded-md p-6 shadow-md lg:max-w-2xl mt-5">
             <h2 class="text-2xl font-semibold mb-4 p-5">Soal Angket {{ $acara->nama_acara }}</h2>
-            {{-- @foreach ($soal as $index => $question)
-                        <div class="mb-4 {{ $index % 2 == 0 ? 'bg-gray-200 rounded-xl' : 'bg-gray-300 rounded-xl' }} lg:p-10 md:pt-10 pb-10">
-                            <p class="text-lg font-medium pt-0 ml-0">
-                                {{ $index + 1 }}: {{ $question->pertanyaan }}
-                            </p>
-                            <div class="mt-2 ml-4 lg:ml-5">
-                                @for ($i = 1; $i <= 4; $i++)
-                                    <label class="flex items-center">
-                                        <input type="radio" name="jawaban[{{ $question->id }}]" value="{{ $i }}" class="mr-2 mt-4">
-                                        <span>{{ $question->{"option_" . $i} }}</span>
-                                        @if ($i === 1)
-                                            <span class="ml-2 mt-4">(Sangat kurang baik)</span>
-                                        @elseif ($i === 2)
-                                            <span class="ml-2 mt-4">(Kurang baik)</span>
-                                        @elseif ($i === 3)
-                                            <span class="ml-2 mt-4">(Baik)</span>
-                                        @elseif ($i === 4)
-                                            <span class="ml-2 mt-4">(Sangat Baik)</span>
-                                        @endif
-                                    </label>
-                                @endfor
-                            </div>
+                    <div id="questions-container" class="mb-4 p-10">
+                        <div id="questions" class="space-y-4">
+                            <!-- Questions will be inserted here -->
+                            
                         </div>
-                    @endforeach --}}
-            <div id="questions"> </div>
-            <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md mt-4 text-right">Submit</button>
+                        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md mt-4 float-right">Submit</button>
+                    </div>
         </div>
         </form>
     </div>
     </div>
-
+    <script>
+        $('#instansi').change(function () {
+            var selected_option = $(this).val();
+    
+            // GET Request
+            $.ajax({
+                url: 'http://localhost:8000/api/pertanyaan-role/' + selected_option,
+                type: 'get',
+                cache: false,
+                success: function (data) {
+                    handleQuestionsData(data);
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                }
+            });
+        });
+    
+        function handleQuestionsData(data) {
+            var questionsDiv = document.getElementById('questions');
+            questionsDiv.innerHTML = '';
+            console.log(data.data);
+            data.data.forEach(function (question, index) {
+                var questionDiv = document.createElement('div');
+                questionDiv.className = 'bg-gray-200 p-4 rounded-md';
+                questionDiv.innerHTML = `
+                    <p class="text-lg font-medium">${index + 1}: ${question.pertanyaan}</p>
+                    <label class="block">
+                        <input type="radio" name="jawaban[${question.id}]" value="1" required class="mt-2">
+                        <span class="ml-2">Sangat kurang baik</span>
+                    </label>
+                    <label class="block">
+                        <input type="radio" name="jawaban[${question.id}]" value="2" required class="mt-2">
+                        <span class="ml-2">Kurang baik</span>
+                    </label>
+                    <label class="block">
+                        <input type="radio" name="jawaban[${question.id}]" value="3" required class="mt-2">
+                        <span class="ml-2">Baik</span>
+                    </label>
+                    <label class="block">
+                        <input type="radio" name="jawaban[${question.id}]" value="4" required class="mt-2">
+                        <span class="ml-2">Sangat Baik</span>
+                    </label>
+                `;
+                questionsDiv.appendChild(questionDiv);
+            });
+        }
+    </script>
+    
 </body>
 
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js'
-    integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous'>
-</script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script>
-    $('#instansi').change(function() {
-        var selected_option = $(this).val();
-        $.ajax({
-            url: 'http://localhost:8000/api/pertanyaan-role/'+selected_option,
-            type: 'get',
-            cache: false,
-            success: function(data) {
-                var questionsDiv = document.getElementById('questions');
-                questionsDiv.innerHTML = '';
-                console.log(data.data);
-                data.data.forEach(function(question) {
-                    var questionDiv = document.createElement('div');
-                    questionDiv.innerHTML = `
-                        <p>${question.pertanyaan}</p>
-                        <label>
-                            <input type="radio" name="answers[${question.id}]" value="option1" required> Opsi 1
-                        </label>
-                        <label>
-                            <input type="radio" name="answers[${question.id}]" value="option2" required> Opsi 2
-                        </label>
-                        <input type="hidden" name="question_ids[]" value="${question.id}">
-                    `;
 
-                    questionsDiv.appendChild(questionDiv);
-                });
-            }
-        });
-    });
-</script>
+    
+
 
 </html>
