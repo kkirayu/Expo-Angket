@@ -17,7 +17,7 @@
                                     method="POST" enctype="multipart/form-data">
                                     @csrf
                                     @if (isset($edit))
-                                        @method('PATCH')
+                                        @method('PUT')
                                         <input type="hidden" value="{{ $edit->id }}" name="id" />
                                         <input type="hidden" value="{{ $getAcara->slug }}" name="slug" />
                                     @endif
@@ -41,7 +41,7 @@
                                                     <input class="form-check-input" type="checkbox" name="req[0][role][]"
                                                         id="req[0][role][]" value="{{ old('req[0][role][]', $role->id) }}"
                                                         @isset($edit)
-                                                            @checked(in_array($role->id, old('req[0][role][]', $edit->role)))>
+                                                            @checked(in_array($role->id, old('req[0][role][]',json_decode( $edit->role_id))))>
                                                         @endisset
                                                     <label class="form-check-label"
                                                         for="req[0][role][]">{{ $role->role }}</label>

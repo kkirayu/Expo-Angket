@@ -19,11 +19,11 @@ class Soal extends Model
         'acara_id',
         'pertanyaan',
         'jawaban',
-        'role',
+        'role_id',
 
     ];
-    
-    protected $casts = ['role' => 'array'];
+
+    // protected $casts = ['role_id' => 'array'];
 
 
     public function roles(): BelongsTo

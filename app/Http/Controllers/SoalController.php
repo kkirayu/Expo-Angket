@@ -97,7 +97,7 @@ class SoalController extends Controller
         $edit = Soal::findOrFail($dId);
         $getAcara = Acara::where('id', $edit->acara_id)->first();
         // dd($getAcara);
-        $getRoles = Role::where('id', '!=', 1)->orderBy('role', 'asc')->get();
+        $getRoles = Role::where('id', '!=', 1)->where('acara_id',$getAcara->id)->orderBy('role', 'asc')->get();
         return view('Admin.acara.acara-form-soal', compact('edit', 'getRoles', 'getAcara'));
     }
 
@@ -118,7 +118,7 @@ class SoalController extends Controller
         $slug = $request->slug;
         Soal::findOrFail($id)->update([
             'pertanyaan' => $request->req[0]['pertanyaan'],
-            'role' => $request->req[0]['role'],
+            'role_id' => json_encode($request->req[0]['role']),
         ]);
 
         $notif = array(

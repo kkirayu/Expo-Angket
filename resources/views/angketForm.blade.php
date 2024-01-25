@@ -154,7 +154,6 @@
             success: function(data) {
                 var questionsDiv = document.getElementById('questions');
                 questionsDiv.innerHTML = '';
-                console.log(data.data);
                 data.data.forEach(function(question) {
                     var questionDiv = document.createElement('div');
                     questionDiv.innerHTML = `
