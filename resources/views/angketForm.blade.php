@@ -73,7 +73,7 @@
                 </script>
             @endif
 
-            <form id="myForm" action="{{ route('angkets.store') }}" method="post">
+            <form id="myForm" action="{{ route('angket.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <h2 class="text-2xl font-semibold mb-4">Data Diri:</h2>
                 <div class="mb-5">
@@ -143,20 +143,31 @@
                 var questionsDiv = document.getElementById('questions');
                 questionsDiv.innerHTML = '';
                 console.log(data.data);
-                data.data.forEach(function(question) {
+                data.data.forEach(function(question, index) {
                     var questionDiv = document.createElement('div');
+                    console.log(question.id, question.pertanyaan);
                     questionDiv.innerHTML = `
-                        <p>${question.pertanyaan}</p>
-                        <label>
-                            <input type="radio" name="answers[${question.id}]" value="option1" required> Opsi 1
-                        </label>
-                        <label>
-                            <input type="radio" name="answers[${question.id}]" value="option2" required> Opsi 2
-                        </label>
-                        <input type="hidden" name="question_ids[]" value="${question.id}">
+                        <p class="text-lg font-medium">${index + 1}: ${question.pertanyaan}</p>
+                    <label class="block">
+                        <input type="radio" name="jawaban[${question.id}]" value="1" required class="mt-2">
+                        <span class="ml-2">Sangat kurang baik</span>
+                    </label>
+                    <label class="block">
+                        <input type="radio" name="jawaban[${question.id}]" value="2" required class="mt-2">
+                        <span class="ml-2">Kurang baik</span>
+                    </label>
+                    <label class="block">
+                        <input type="radio" name="jawaban[${question.id}]" value="3" required class="mt-2">
+                        <span class="ml-2">Baik</span>
+                    </label>
+                    <label class="block">
+                        <input type="radio" name="jawaban[${question.id}]" value="4" required class="mt-2">
+                        <span class="ml-2">Sangat Baik</span>
+                    </label>
+                    <input type="hidden" name="question_ids[]" value="${question.id}">
                     `;
 
-                    questionsDiv.appendChild(questionDiv);
+                    questionsDiv.append(questionDiv);
                 });
             }
         });

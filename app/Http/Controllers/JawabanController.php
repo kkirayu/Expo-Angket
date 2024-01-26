@@ -43,33 +43,41 @@ class JawabanController extends Controller
     {
         // Uncomment this line for debugging
         // dd($request->all());
-    
+
         $request->validate([
             'nama' => 'required|string',
             'email' => 'required|email',
             'instansi' => 'required|string',
             'jawaban.*' => 'required|integer',
         ]);
-    
-        $jawabanData = $request->input('jawaban');
-    
-        // Check if $jawabanData is not null before iterating
-        if ($jawabanData !== null) {
-            $totalNilai = array_sum($jawabanData);
-    
-            Jawaban::create([
-                'jawaban' => $totalNilai,
-                'nama' => $request->input('nama'),
-                'email' => $request->input('email'),
-                'instansi' => $request->input('instansi'),
-            ]);
-    
-            return redirect()->back()->with('success', 'Jawaban berhasil disimpan.');
-        }
-    
-        return redirect()->back()->with('error', 'Tidak ada jawaban yang disubmit.');
+
+        dd($request);
+
+        return response()->json([
+            'data' => $request,
+            'message' => 'id jawaban',
+            'success' => true
+        ]);
+
+        // $jawabanData = $request->input('jawaban');
+
+        // // Check if $jawabanData is not null before iterating
+        // if ($jawabanData !== null) {
+        //     $totalNilai = array_sum($jawabanData);
+
+        //     Jawaban::create([
+        //         'jawaban' => $totalNilai,
+        //         'nama' => $request->input('nama'),
+        //         'email' => $request->input('email'),
+        //         'instansi' => $request->input('instansi'),
+        //     ]);
+
+        //     return redirect()->back()->with('success', 'Jawaban berhasil disimpan.');
+        // }
+
+        // return redirect()->back()->with('error', 'Tidak ada jawaban yang disubmit.');
     }
-    
+
 
 
     public function pertanyaanByRole(Request $request ,$id)
