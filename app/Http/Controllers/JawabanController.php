@@ -51,31 +51,31 @@ class JawabanController extends Controller
             'jawaban.*' => 'required|integer',
         ]);
 
-        dd($request);
+        // dd($request);
 
-        return response()->json([
-            'data' => $request,
-            'message' => 'id jawaban',
-            'success' => true
-        ]);
+        // return response()->json([
+        //     'data' => $request,
+        //     'message' => 'id jawaban',
+        //     'success' => true
+        // ]);
 
-        // $jawabanData = $request->input('jawaban');
+        $jawabanData = $request->input('jawaban');
 
-        // // Check if $jawabanData is not null before iterating
-        // if ($jawabanData !== null) {
-        //     $totalNilai = array_sum($jawabanData);
+        // Check if $jawabanData is not null before iterating
+        if ($jawabanData !== null) {
+            $totalNilai = array_sum($jawabanData);
 
-        //     Jawaban::create([
-        //         'jawaban' => $totalNilai,
-        //         'nama' => $request->input('nama'),
-        //         'email' => $request->input('email'),
-        //         'instansi' => $request->input('instansi'),
-        //     ]);
+            Jawaban::create([
+                'jawaban' => $totalNilai,
+                'nama' => $request->input('nama'),
+                'email' => $request->input('email'),
+                'instansi' => $request->input('instansi'),
+            ]);
 
-        //     return redirect()->back()->with('success', 'Jawaban berhasil disimpan.');
-        // }
+            return redirect()->back()->with('success', 'Jawaban berhasil disimpan.');
+        }
 
-        // return redirect()->back()->with('error', 'Tidak ada jawaban yang disubmit.');
+        return redirect()->back()->with('error', 'Tidak ada jawaban yang disubmit.');
     }
 
 

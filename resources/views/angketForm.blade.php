@@ -8,11 +8,11 @@
     <title>Angket</title>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js'
-    integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous'>
-</script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js'
+        integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous'>
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -106,21 +106,21 @@
                         @endforeach
                     </select>
                 </div>
-        </div>
 
 
-        <div class="max-w-xs mx-auto bg-white rounded-md p-6 shadow-md lg:max-w-2xl mt-5">
-            <h2 class="text-2xl font-semibold mb-4 p-5">Soal Angket {{ $acara->nama_acara }}</h2>
+                <div class="max-w-xs mx-auto bg-white rounded-md p-6 shadow-md lg:max-w-2xl mt-5">
+                    <h2 class="text-2xl font-semibold mb-4 p-5">Soal Angket {{ $acara->nama_acara }}</h2>
                     <div id="questions-container" class="mb-4 p-10">
                         <div id="questions" class="space-y-4">
                             <!-- Questions will be inserted here -->
 
                         </div>
-                        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md mt-4 float-right">Submit</button>
+                        <button type="submit"
+                            class="bg-blue-500 text-white py-2 px-4 rounded-md mt-4 float-right">Submit</button>
                     </div>
+                </div>
+            </form>
         </div>
-        </form>
-    </div>
     </div>
 
 </body>
@@ -136,7 +136,7 @@
     $('#instansi').change(function() {
         var selected_option = $(this).val();
         $.ajax({
-            url: 'http://localhost:8000/api/pertanyaan-role/'+selected_option,
+            url: 'http://localhost:8000/api/pertanyaan-role/' + selected_option,
             type: 'get',
             cache: false,
             success: function(data) {
