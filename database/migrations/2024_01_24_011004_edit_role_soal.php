@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('soals', function (Blueprint $table) {
-            $table->dropColumn('jawaban');
             $table->dropColumn('role');
             $table->json('role_id')->nullable()->after('pertanyaan')->references('id')->on('roles');
         });

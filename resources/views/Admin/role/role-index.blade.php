@@ -23,6 +23,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Nama Role</th>
+                                <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -30,8 +31,15 @@
                             @foreach ($roles as $index => $role)
                                 <tr>
                                     <td width="5%">#{{ $index + 1 }}</td>
-                                    <td width="70%" style="white-space:normal;">{{ $role->role }}</td>
-                                    <td width="25%">
+                                    <td width="75%" style="white-space:normal;">{{ $role->role }}</td>
+                                    <td width="10%" style="white-space:normal;">
+                                        @if ($role->status == 1)
+                                            <span class="badge bg-success text-white">Aktif</span>
+                                        @elseif ($role->status == 1)
+                                            <span class="badge bg-danger text-white">Tidak Aktif</span>
+                                        @endif
+                                    </td>
+                                    <td width="10%">
                                         <div class="d-flex order-actions">
                                             <a href="{{ route('admin-roles.edit', encrypt($role->id)) }}"
                                                 class="ms-1 text-white" style="background: #0d6efd" data-toggle="tooltip"

@@ -76,6 +76,7 @@
             <form id="myForm" action="{{ route('angket.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <h2 class="text-2xl font-semibold mb-4">Data Diri:</h2>
+                <input type="hidden" name="acaraId" value="{{ $acara->id }}">
                 <div class="mb-5">
                     <label for="nama"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
@@ -148,23 +149,25 @@
                     console.log(question.id, question.pertanyaan);
                     questionDiv.innerHTML = `
                         <p class="text-lg font-medium">${index + 1}: ${question.pertanyaan}</p>
+                    <div class="ml-5">
                     <label class="block">
-                        <input type="radio" name="jawaban[${question.id}]" value="1" required class="mt-2">
-                        <span class="ml-2">Sangat kurang baik</span>
-                    </label>
-                    <label class="block">
-                        <input type="radio" name="jawaban[${question.id}]" value="2" required class="mt-2">
-                        <span class="ml-2">Kurang baik</span>
+                        <input type="radio" name="jawaban[${question.id}]" value="4" required class="mt-2">
+                        <span class="ml-2">Sangat Baik</span>
                     </label>
                     <label class="block">
                         <input type="radio" name="jawaban[${question.id}]" value="3" required class="mt-2">
                         <span class="ml-2">Baik</span>
                     </label>
                     <label class="block">
-                        <input type="radio" name="jawaban[${question.id}]" value="4" required class="mt-2">
-                        <span class="ml-2">Sangat Baik</span>
+                        <input type="radio" name="jawaban[${question.id}]" value="2" required class="mt-2">
+                        <span class="ml-2">Kurang baik</span>
+                    </label>
+                    <label class="block">
+                        <input type="radio" name="jawaban[${question.id}]" value="1" required class="mt-2">
+                        <span class="ml-2">Sangat kurang baik</span>
                     </label>
                     <input type="hidden" name="question_ids[]" value="${question.id}">
+                    </div>
                     `;
 
                     questionsDiv.append(questionDiv);

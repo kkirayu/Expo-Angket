@@ -13,13 +13,16 @@ return new class extends Migration
     {
         Schema::create('jawabans', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('soal_id');
-            $table->string('jawaban');
+            $table->string('nama');
+            $table->string('email');
+            $table->double('jawaban');
+            $table->unsignedBigInteger('acara_id')->nullable();
+            $table->foreign('acara_id')->references('id')->on('acaras');
+            $table->unsignedBigInteger('role_id')->nullable();
+            $table->foreign('role_id')->references('id')->on('roles');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('soal_id')->references('id')->on('soals')->onDelete('cascade');
+
         });
     }
 
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jawabans');
+        //
     }
 };

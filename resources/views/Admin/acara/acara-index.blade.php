@@ -24,6 +24,7 @@
                                 <th>#</th>
                                 <th>Nama Acara</th>
                                 <th>Deskripsi</th>
+                                <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -41,7 +42,14 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td width="55%" style="white-space:normal;">{{ $acara->deskripsi }}</td>
+                                    <td width="45%" style="white-space:normal;">{{ $acara->deskripsi }}</td>
+                                    <td width="10%" style="white-space:normal;">
+                                        @if ($acara->status == 1)
+                                            <span class="badge bg-success text-white">Aktif</span>
+                                        @elseif ($acara->status == 1)
+                                            <span class="badge bg-danger text-white">Tidak Aktif</span>
+                                        @endif
+                                    </td>
                                     <td width="10%">
                                         <div class="d-flex order-actions">
                                             <a href="{{ route('admin.role-acara', $acara->slug) }}"

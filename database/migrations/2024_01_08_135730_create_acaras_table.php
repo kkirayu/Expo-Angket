@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('nama_acara');
             $table->text('deskripsi');
+            $table->string('photo')->nullable();
+            $table->string('slug')->unique()->nullable();
+            $table->tinyInteger('status')->default(1); // 0:tidak aktif; 1:aktif
             $table->timestamps();
         });
     }

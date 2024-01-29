@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
             $table->string('role');
+            $table->unsignedBigInteger('acara_id')->nullable();
+            $table->foreign('acara_id')->references('id')->on('acaras');
+            $table->tinyInteger('status')->default(1); // 0:tidak aktif; 1:aktif
             $table->timestamps();
         });
     }

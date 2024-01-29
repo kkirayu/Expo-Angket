@@ -27,7 +27,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/angket', [AcaraController::class, 'angketIndex'])->name('angket.index');
 Route::get('/angket/{acaraId}', [JawabanController::class, 'angketForm'])->name('angket.form');
-Route::post('/angket/store', [JawabanController::class, 'store'])->name('angket.store');
+Route::post('/angket/store', [JawabanController::class, 'angketStore'])->name('angket.store');
 // Route::get('/Admin', function () {
 //     return view('Admin.Dashboard');
 // })->middleware(['auth', 'verified'])->name('admin.dashboard');
@@ -99,6 +99,9 @@ Route::middleware('auth')->group(function () {
     // Route Admin User
     Route::resource('admin-user', UserController::class);
 
+    // Route Admin Jawaban
+    Route::resource('admin-jawaban', JawabanController::class);
+    Route::get('/admin-jawaban/{slug}/acara', [JawabanController::class, 'jawabanAcara'])->name('admin.jawaban-acara');
 
 });
 

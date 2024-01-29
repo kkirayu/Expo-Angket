@@ -11,8 +11,13 @@
                     </div>
                     <div class="font-22 ms-auto">
                         <div class="btn-group">
-                            <button type="button" onclick="window.location.href='{{ route('admin.acara-soal', encrypt($getAcaraId->id)) }}'"
-                                class="btn btn-primary">Tambah Soal</button>
+                            @if ($countRoleAcara != 0)
+                                <button type="button" onclick="window.location.href='{{ route('admin.acara-soal', encrypt($getAcaraId->id)) }}'"
+                                    class="btn btn-primary">Tambah Soal</button>
+                            @else
+                                <button type="button" onclick="window.location.href='{{ route('admin.role-tambah', encrypt($getAcaraId->id)) }}'"
+                                    class="btn btn-primary">Tambah Role Terlebih Dahulu</button>
+                            @endif
                         </div>
                     </div>
                 </div>

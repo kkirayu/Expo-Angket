@@ -20,13 +20,25 @@ class JawabanController extends Controller
 
         // Dapatkan informasi acara
         $acara = Acara::findOrFail($acaraId);
-        $roles = Role::where('acara_id',$acaraId)->get();
+        $roles = Role::where('acara_id', $acaraId)->get();
 
         // $soal = Soal::where('acara_id', $acara->id)->where('role', $userRole)->get();
 
-        return view('angketForm', compact('soal', 'acara','roles'));
+        return view('angketForm', compact('soal', 'acara', 'roles'));
     }
 
+    public function jawabanAcara($slug)
+    {
+        $getAcaraId = Acara::where('slug', $slug)->first();
+        $jawabans = Jawaban::where('acara_id', $getAcaraId->id)->orderBy('role_id', 'asc')->get();
+        $judul = $getAcaraId->nama_acara;
+        return view('Admin.jawaban.jawaban-index', compact('getAcaraId', 'jawabans', 'judul'));
+    }
+
+    public function index()
+    {
+
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -36,10 +48,15 @@ class JawabanController extends Controller
         //
     }
 
+    public function store(Request $request)
+    {
+        //
+    }
+
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function angketStore(Request $request)
     {
         // Uncomment this line for debugging
         // dd($request->all());
@@ -51,25 +68,44 @@ class JawabanController extends Controller
             'jawaban.*' => 'required|integer',
         ]);
 
-        // dd($request);
-
-        // return response()->json([
-        //     'data' => $request,
-        //     'message' => 'id jawaban',
-        //     'success' => true
-        // ]);
 
         $jawabanData = $request->input('jawaban');
 
+
+        // Harusnya di bikinkan di frontend
+        // if ($hasil <= 25) {
+        //     $ket = 'Sangat Kurang Baik';
+        // } elseif ($hasil > 25 && $hasil <= 50){
+        //     $ket = 'Kurang Baik';
+        // } elseif ($hasil > 50 && $hasil <= 75){
+        //     $ket = 'Baik';
+        // } elseif ($hasil > 75){
+        //     $ket = 'Sangat Baik';
+        // }
+        // Sampai sini
+
+
+
+        // dd('skor: '.round($hasil), 'ket: '.$ket);
+
         // Check if $jawabanData is not null before iterating
         if ($jawabanData !== null) {
-            $totalNilai = array_sum($jawabanData);
+            // $totalNilai = array_sum($jawabanData);
+
+            $jumlahPilihan = array_count_values($jawabanData);
+            $jumlahSoal = array_sum($jumlahPilihan);
+
+            $pengali = 100 / ($jumlahSoal * 4);
+
+            $hasil = array_sum($jawabanData) * $pengali;
+
 
             Jawaban::create([
-                'jawaban' => $totalNilai,
+                'jawaban' => $hasil,
+                'acara_id' => $request->input('acaraId'),
                 'nama' => $request->input('nama'),
                 'email' => $request->input('email'),
-                'instansi' => $request->input('instansi'),
+                'role_id' => $request->input('instansi'),
             ]);
 
             return redirect()->back()->with('success', 'Jawaban berhasil disimpan.');
@@ -80,7 +116,7 @@ class JawabanController extends Controller
 
 
 
-    public function pertanyaanByRole(Request $request ,$id)
+    public function pertanyaanByRole(Request $request, $id)
     {
 
         $questions = Soal::whereJsonContains('role_id', $id)->get();

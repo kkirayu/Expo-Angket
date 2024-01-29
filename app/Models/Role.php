@@ -10,11 +10,16 @@ class Role extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['role', 'acara_id'];
+    protected $fillable = ['role', 'acara_id', 'status'];
 
     public function soal(): HasMany
     {
         return $this->hasMany(Soal::class);
+    }
+
+    public function jawaban(): HasMany
+    {
+        return $this->hasMany(Jawaban::class);
     }
 
 

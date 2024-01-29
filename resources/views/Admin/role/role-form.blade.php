@@ -28,7 +28,7 @@
                                         <div class="form-group col-sm-9 text-secondary">
                                             <input type="text" name="role" class="form-control"
                                                 value="{{ old('role', isset($edit) ? $edit->role : '') }}"
-                                                placeholder="Ex: Admin" />
+                                                placeholder="Ex: Pengunjung" />
                                                 @error('role')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror

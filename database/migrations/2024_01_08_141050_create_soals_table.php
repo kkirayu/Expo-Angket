@@ -16,8 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('acara_id');
             $table->foreign('acara_id')->references('id')->on('acaras')->onDelete('cascade');
             $table->text('pertanyaan');
-            $table->string('jawaban')->nullable();
             $table->string('role');
+            $table->tinyInteger('status')->default(1); // 0:tidak aktif; 1:aktif
             $table->timestamps();
         });
     }

@@ -17,6 +17,7 @@ class Acara extends Model
         'nama_acara',
         'deskripsi',
         'photo',
-        'slug'
+        'slug',
+        'status'
     ];
 }

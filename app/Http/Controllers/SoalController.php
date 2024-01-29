@@ -25,11 +25,12 @@ class SoalController extends Controller
     public function soalAcara($slug)
     {
         $getAcaraId = Acara::where('slug', $slug)->first();
-        $soal = Soal::where('acara_id', $getAcaraId->id)->get();
+        $soal = Soal::where('acara_id', $getAcaraId->id)->orderBy('pertanyaan', 'asc')->get();
         $judul = $getAcaraId->nama_acara;
-        // dd($soal);
+        $countRoleAcara = count(Role::where('acara_id',$getAcaraId->id)->get());
+        // dd($countRoleAcara);
         $getRole = Role::all();
-        return view('Admin.soal.soal-index', compact('getAcaraId','soal', 'getRole', 'judul'));
+        return view('Admin.soal.soal-index', compact('getAcaraId','soal', 'getRole', 'judul', 'countRoleAcara'));
     }
 
     /**
