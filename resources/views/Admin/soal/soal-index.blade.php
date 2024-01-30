@@ -29,6 +29,7 @@
                                 <th>#</th>
                                 <th>Pertanyaan</th>
                                 <th>Role</th>
+                                <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -36,8 +37,8 @@
                             @foreach ($soal as $index => $a)
                                 <tr>
                                     <td width="5%">#{{ $index + 1 }}</td>
-                                    <td width="55%" style="white-space:normal;">{{ $a->pertanyaan }}</td>
-                                    <td width="30%" style="white-space:normal;">
+                                    <td width="50%" style="white-space:normal;">{{ $a->pertanyaan }}</td>
+                                    <td width="25%" style="white-space:normal;">
                                         @foreach (json_decode($a->role_id, true) as $ar)
                                             @foreach ($getRole as $ro)
                                                 @if ($ro->id == json_decode($ar, true))
@@ -46,14 +47,21 @@
                                             @endforeach
                                         @endforeach
                                     </td>
+                                    <td width="10%" style="white-space:normal; text-align: center">
+                                        @if ($a->status == 1)
+                                            <span class="badge bg-success text-white">Aktif</span>
+                                        @elseif ($a->status == 0)
+                                            <span class="badge bg-danger text-white">Tidak Aktif</span>
+                                        @endif
+                                    </td>
                                     <td width="10%">
                                         <div class="d-flex order-actions">
                                             <a href="{{ route('admin.soal-edit', encrypt($a->id)) }}"
                                                 class="ms-1 text-white" style="background: #0d6efd" data-toggle="tooltip"
                                                 title="Edit"><i class="bx bx-edit"></i></a>
-                                            <a href="{{ route('acaras.destroy', encrypt($a->id)) }}"
-                                                class="ms-1 text-white" style="background: #0d6efd" data-toggle="tooltip"
-                                                title="Hapus"><i class="bx bx-trash"></i></a>
+                                                <a href="{{ route('admin.soal-destroy', encrypt($a->id)) }}"
+                                                    class="ms-1 text-white" style="background: #0d6efd" data-toggle="tooltip"
+                                                    title="{{ $a->status == 1 ? 'Non-aktifkan' : 'Aktfikan' }}"><i class="bx {{ $a->status == 1 ? 'bx-message-square-x' : 'bx-message-square-check' }}"></i></a>
                                         </div>
                                     </td>
                                 </tr>

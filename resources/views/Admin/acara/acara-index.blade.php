@@ -43,10 +43,10 @@
                                         </div>
                                     </td>
                                     <td width="45%" style="white-space:normal;">{{ $acara->deskripsi }}</td>
-                                    <td width="10%" style="white-space:normal;">
+                                    <td width="10%" style="white-space:normal; text-align: center">
                                         @if ($acara->status == 1)
                                             <span class="badge bg-success text-white">Aktif</span>
-                                        @elseif ($acara->status == 1)
+                                        @elseif ($acara->status == 0)
                                             <span class="badge bg-danger text-white">Tidak Aktif</span>
                                         @endif
                                     </td>
@@ -61,9 +61,9 @@
                                             <a href="{{ route('admin.acara-edit', encrypt($acara->id)) }}"
                                                 class="ms-1 text-white" style="background: #0d6efd" data-toggle="tooltip"
                                                 title="Edit"><i class="bx bx-edit"></i></a>
-                                            <a href="{{ route('acaras.destroy', encrypt($acara->id)) }}"
+                                            <a href="{{ route('admin.acara-destroy', encrypt($acara->id)) }}"
                                                 class="ms-1 text-white" style="background: #0d6efd" data-toggle="tooltip"
-                                                title="Hapus"><i class="bx bx-trash"></i></a>
+                                                title="{{ $acara->status == 1 ? 'Non-aktifkan' : 'Aktfikan' }}"><i class="bx {{ $acara->status == 1 ? 'bx-message-square-x' : 'bx-message-square-check' }}"></i></a>
                                         </div>
                                     </td>
                                 </tr>

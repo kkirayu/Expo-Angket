@@ -32,10 +32,10 @@
                                 <tr>
                                     <td width="5%">#{{ $index + 1 }}</td>
                                     <td width="75%" style="white-space:normal;">{{ $role->role }}</td>
-                                    <td width="10%" style="white-space:normal;">
+                                    <td width="10%" style="white-space:normal; text-align: center">
                                         @if ($role->status == 1)
                                             <span class="badge bg-success text-white">Aktif</span>
-                                        @elseif ($role->status == 1)
+                                        @elseif ($role->status == 0)
                                             <span class="badge bg-danger text-white">Tidak Aktif</span>
                                         @endif
                                     </td>
@@ -44,9 +44,9 @@
                                             <a href="{{ route('admin-roles.edit', encrypt($role->id)) }}"
                                                 class="ms-1 text-white" style="background: #0d6efd" data-toggle="tooltip"
                                                 title="Edit"><i class="bx bx-edit"></i></a>
-                                            <a href="{{ route('admin-roles.destroy', encrypt($role->id)) }}"
+                                            <a href="{{ route('admin.role-destroy', encrypt($role->id)) }}"
                                                 class="ms-1 text-white" style="background: #0d6efd" data-toggle="tooltip"
-                                                title="Hapus"><i class="bx bx-trash"></i></a>
+                                                title="{{ $role->status == 1 ? 'Non-aktifkan' : 'Aktfikan' }}"><i class="bx {{ $role->status == 1 ? 'bx-message-square-x' : 'bx-message-square-check' }}"></i></a>
                                         </div>
                                     </td>
                                 </tr>

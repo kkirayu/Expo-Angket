@@ -33,7 +33,7 @@
             </a>
             <ul>
                 @php
-                    $getAcara = App\Models\Acara::where('id','!=',1)->get();
+                    $getAcara = App\Models\Acara::where('id','!=',1)->where('status','!=',0)->get();
                 @endphp
                 <li class="{{ Request::is('admin-roles/user/acara') ? 'mm-active' :'' }}"> <a href="{{ route('admin.role-acara', 'user') }}"><i class="bx bx-radio-circle"></i>Role Users</a>
                 </li>
@@ -51,7 +51,7 @@
             </a>
             <ul>
                 @php
-                    $getAcara = App\Models\Acara::where('id','!=',1)->get();
+                    $getAcara = App\Models\Acara::where('id','!=',1)->where('status','!=',0)->get();
                 @endphp
                 @foreach ($getAcara as $acara)
                     <li class="{{ Request::is('admin-soal/'.$acara->slug.'/acara') ? 'mm-active' :'' }}"> <a href="{{ route('admin.soal', $acara->slug) }}"><i class="bx bx-radio-circle"></i>{{ $acara->nama_acara }}</a>
@@ -67,7 +67,7 @@
             </a>
             <ul>
                 @php
-                    $getAcara = App\Models\Acara::where('id','!=',1)->get();
+                    $getAcara = App\Models\Acara::where('id','!=',1)->where('status','!=',0)->get();
                 @endphp
                 @foreach ($getAcara as $acara)
                     <li class="{{ Request::is('admin-jawaban/'.$acara->slug.'/acara') ? 'mm-active' :'' }}"> <a href="{{ route('admin.jawaban-acara', $acara->slug) }}"><i class="bx bx-radio-circle"></i>{{ $acara->nama_acara }}</a>
