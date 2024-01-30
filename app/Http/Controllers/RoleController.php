@@ -32,13 +32,23 @@ class RoleController extends Controller
     {
 
         $request->validate([
-            'role' => 'required',
+            'req.*.role' => 'required',
         ]);
 
         $acara = Acara::findOrFail($request->acara);
         $slug = $acara->slug;
 
-        Role::create(['role' => $request->role, 'acara_id' => $request->acara]);
+        $data = [];
+
+        foreach ($request->req as $r) {
+
+            $data[] = [
+                'role' => $r['role'],
+                'acara_id' => $request->acara
+            ];
+        }
+
+        Role::insert($data);
 
         $notif = array(
             'message' => 'Role Berhasil Ditambah',
@@ -63,8 +73,9 @@ class RoleController extends Controller
     {
         $dId = decrypt($id);
         $edit = Role::findOrFail($dId);
+        $judul = Acara::where('id', $edit->acara_id)->first();
 
-        return view('Admin.role.role-form', compact('edit'));
+        return view('Admin.role.role-form', compact('edit', 'judul'));
     }
 
 
@@ -74,17 +85,19 @@ class RoleController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'role' => 'required|unique:roles,role,' . $id,
+            'req.0.role' => 'required'
         ]);
 
-        Role::findOrFail($id)->update(['role' => $request->role]);
+        $slug = $request->slug;
+
+        Role::findOrFail($id)->update(['role' => $request->req[0]['role']]);
 
         $notif = array(
             'message' => 'Role Berhasil Diubah',
             'alert-type' => 'success'
         );
 
-        return redirect()->route('admin-roles.index')->with($notif);
+        return redirect()->route('admin.role-acara', $slug)->with($notif);
     }
 
     /**
