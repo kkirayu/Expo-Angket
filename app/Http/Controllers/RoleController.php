@@ -100,6 +100,33 @@ class RoleController extends Controller
         return redirect()->route('admin.role-acara', $slug)->with($notif);
     }
 
+    public function destroySoft($id)
+    {
+        $dId = decrypt($id);
+        $destroy = Role::findOrFail($dId);
+
+        $getAcara = Acara::where('id', $destroy->acara_id)->first();
+        $slug = $getAcara->slug;
+
+        if($destroy->status == 1){
+            $destroy->update([
+                'status' => 0
+            ]);
+            $message = 'Di Non-aktifkan';
+        } elseif($destroy->status == 0){
+            $destroy->update([
+                'status' => 1
+            ]);
+            $message = 'Di Aktifkan';
+        }
+
+        $notif = array(
+            'message' => 'Role Berhasil '.$message,
+            'alert-type' => 'success'
+        );
+        return redirect()->route('admin.role-acara', $slug)->with($notif);
+    }
+
     /**
      * Remove the specified resource from storage.
      */

@@ -128,18 +128,33 @@ class AcaraController extends Controller
     {
         $dId = decrypt($id);
         $getAcara = Acara::findOrFail($dId);
-        $getRoles = Role::where('id', '!=', 1)->where('acara_id',$getAcara->id)->orderBy('role', 'asc')->get();
+        $getRoles = Role::where('id', '!=', 1)->where('status','!=',0)->where('acara_id',$getAcara->id)->orderBy('role', 'asc')->get();
         return view('Admin.acara.acara-form-soal', compact('getAcara','getRoles'));
     }
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($acaraId)
+    public function destroySoft($id)
     {
-        $acara = Acara::findOrFail($acaraId);
-        $acara->delete();
+        $dId = decrypt($id);
+        $destroy = Acara::findOrFail($dId);
+        if($destroy->status == 1){
+            $destroy->update([
+                'status' => 0
+            ]);
+            $message = 'Di Non-aktifkan';
+        } elseif($destroy->status == 0){
+            $destroy->update([
+                'status' => 1
+            ]);
+            $message = 'Di Aktifkan';
+        }
 
-        return redirect()->route('table')->with('success', 'Acara berhasil dihapus!');
+        $notif = array(
+            'message' => 'Acara Berhasil '.$message,
+            'alert-type' => 'success'
+        );
+        return redirect()->route('admin.acara')->with($notif);
     }
 
     public function createSoal($acaraId)
@@ -151,7 +166,7 @@ class AcaraController extends Controller
     {
         $dId = decrypt($id);
         $getAcara = Acara::findOrFail($dId);
-        $getRoles = Role::where('id', '!=', '1')->get();
+        $getRoles = Role::where('id', '!=', 1)->where('status','!=',0)->get();
         return view('Admin.acaraCreateSoal-new', compact('getAcara', 'getRoles'));
     }
     public function angketIndex()
@@ -163,5 +178,5 @@ class AcaraController extends Controller
     }
 
 
-    
+
 }

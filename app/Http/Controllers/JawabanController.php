@@ -20,7 +20,7 @@ class JawabanController extends Controller
 
         // Dapatkan informasi acara
         $acara = Acara::findOrFail($acaraId);
-        $roles = Role::where('acara_id', $acaraId)->get();
+        $roles = Role::where('acara_id', $acaraId)->where('status',1)->get();
 
         // $soal = Soal::where('acara_id', $acara->id)->where('role', $userRole)->get();
 
@@ -119,7 +119,7 @@ class JawabanController extends Controller
     public function pertanyaanByRole(Request $request, $id)
     {
 
-        $questions = Soal::whereJsonContains('role_id', $id)->get();
+        $questions = Soal::whereJsonContains('role_id', $id)->where('status',1)->get();
         // return response()->json($questions);
         return response()->json([
             'data' => $questions,
