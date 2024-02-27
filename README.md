@@ -7,10 +7,20 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## Tools
+<h3>- Laravel 10</h3>
+<h3>- Tailwind in Angket</h3>
+<h3>- Bootstrap 5</h3>
+<h3>- Breeze</h3>
+<h3>- mysql</h3>
+<h3>- prettier</h3>
 
-<h3>Clone Repositories to your Local</h3>
-<h3>Composer Install</h3>
-<h3>npm install</h3>
-<h3>php artisan serve</h3>
-<h3>npm run dev</h3>
+## Instalasi Local
+
+<h3>- Clone Repositories to your Local</h3>
+<h3>- Composer Install</h3>
+<h3>- npm install</h3>
+<h3>- php artisan serve</h3>
+<h3>- npm run dev</h3>
+
+
