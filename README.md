@@ -17,11 +17,11 @@
 
 ## Instalasi Local
 
-<h3>- Clone Repositories to your Local</h3>
-<h3>- Composer Install</h3>
-<h3>- npm install</h3>
-<h3>- php artisan serve</h3>
-<h3>- npm run dev</h3>
+<p>- Clone Repositories to your Local</p>
+<p>- Composer Install</p>
+<p>- npm install</p>
+<p>- php artisan serve</p>
+<p>- npm run dev</p>
 
 ## About Project
 <p>About Expo Survey Website
