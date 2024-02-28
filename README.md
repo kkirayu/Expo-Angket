@@ -8,12 +8,12 @@
 </p>
 
 ## Tools
-<h3>- Laravel 10</h3>
-<h3>- Tailwind in Angket</h3>
-<h3>- Bootstrap 5</h3>
-<h3>- Breeze</h3>
-<h3>- mysql</h3>
-<h3>- prettier</h3>
+<p>- Laravel 10</p>
+<p>- Tailwind in Angket</p>
+<p>- Bootstrap 5</p>
+<p>- Breeze</p>
+<p>- mysql</p>
+<p>- prettier</p>
 
 ## Instalasi Local
 
